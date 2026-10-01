@@ -12,8 +12,9 @@
  *
  * Fluxo: no formulario "Interessado neste veiculo?", este snippet troca so o
  * que o envio faz. Em vez de abrir o WhatsApp direto (o que o veiculo.js do
- * tema faz), guarda a mesma mensagem no sessionStorage (chave
- * muricy_wpp_msg) e leva a pessoa para /obrigado/. Esta pagina:
+ * tema faz), grava o lead na planilha do Google (MURICY_LEADS_URL), guarda a
+ * mensagem no sessionStorage (chave muricy_wpp_msg) e leva a pessoa para
+ * /obrigado/. Esta pagina:
  *  - dispara a conversao "Enviou Forms" do GTM so por carregar (acionador
  *    Page Path = /obrigado/; nada a fazer aqui);
  *  - mostra o link "Pedir Orçamento no WhatsApp" (id btn-obrigado-whatsapp),
@@ -46,6 +47,15 @@ if ( ! defined( 'MURICY_OBRIGADO_SLUG' ) ) {
 // sempre comeca com esta frase, e o link e montado colando os dados do
 // formulario depois desse endereco, sem recodificar a parte inicial. Nao
 // mudar uma letra sem mudar o acionador no GTM junto.
+// Planilha "Leads do site - Muricy Motors" (Google Apps Script publicado como
+// App da Web; codigo em google-sheets/leads-apps-script.gs no repositorio).
+// O token tem que ser igual ao do script. Ele aparece no codigo da pagina:
+// serve so para barrar robos que nao leem o site, nao e senha.
+if ( ! defined( 'MURICY_LEADS_URL' ) ) {
+	define( 'MURICY_LEADS_URL', 'https://script.google.com/macros/s/AKfycbxJnebneIwQszJQsjFaAzS_fjMP0fiC7sJamzpdegD7CuJJifZ3aA4fNirmzqQXsDS9/exec' );
+	define( 'MURICY_LEADS_TOKEN', '40b0ead5df0313d439c15932' );
+}
+
 if ( ! defined( 'MURICY_OBRIGADO_ABERTURA' ) ) {
 	define( 'MURICY_OBRIGADO_ABERTURA', 'Olá! Vim do site e tenho interesse nos carros da Motors.' );
 	define( 'MURICY_OBRIGADO_WPP_URL', 'https://wa.me/5511912899610?text=Ol%C3%A1!%20Vim%20do%20site%20e%20tenho%20interesse%20nos%20carros%20da%20Motors.' );
@@ -153,6 +163,30 @@ add_action( 'wp_footer', function () {
     );
     var message = (data.get('mensagem') || '').trim();
     if (message) lines.push('', 'Mensagem: ' + message);
+
+    // Grava o lead na planilha agora, antes de sair da pagina: mesmo que a
+    // pessoa desista do WhatsApp, o vendedor tem o contato. sendBeacon foi
+    // feito para isso (o navegador entrega mesmo com a troca de pagina) e vai
+    // direto para o Google, sem passar pelo servidor do site.
+    var lead = JSON.stringify({
+      token: <?php echo wp_json_encode( MURICY_LEADS_TOKEN ); ?>,
+      nome: (data.get('nome') || '').trim(),
+      email: (data.get('email') || '').trim(),
+      telefone: (data.get('telefone') || '').trim(),
+      veiculo: form.dataset.vehicle || '',
+      mensagem: message,
+      pagina: window.location.href
+    });
+    var leadsUrl = <?php echo wp_json_encode( MURICY_LEADS_URL ); ?>;
+    var enviado = false;
+    try {
+      enviado = !!(navigator.sendBeacon && navigator.sendBeacon(leadsUrl, new Blob([lead], { type: 'text/plain;charset=UTF-8' })));
+    } catch (err) { enviado = false; }
+    if (!enviado) {
+      try {
+        fetch(leadsUrl, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: lead });
+      } catch (err) { /* sem envio: segue para a /obrigado/ assim mesmo */ }
+    }
 
     // Nome, e-mail e telefone nunca vao na URL (o Google Analytics/Ads
     // registra a URL). Sem sessionStorage, a /obrigado/ usa a mensagem padrao.
