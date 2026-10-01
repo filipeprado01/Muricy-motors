@@ -2,9 +2,9 @@
 /**
  * Muricy Motors - pagina /obrigado/ (pos-envio do formulario de veiculo)
  *
- * Snippet PHP do WPCode, NOVO e SEPARADO do "mecanismo de preview do tema
- * filho" (nunca colar este codigo dentro daquele: ele e quem mantem no ar o
- * Estoque, o Inicio e as paginas de veiculo).
+ * Snippet PHP do WPCode, NOVO e SEPARADO do snippet "Tema" (ID 3801, o
+ * "mecanismo de preview do tema filho"). Nunca colar este codigo dentro
+ * daquele: ele e quem mantem no ar o Estoque, o Inicio e as paginas de veiculo.
  * No WPCode o codigo comeca neste comentario, sem a tag de abertura do PHP.
  *
  * Nao altera nenhum arquivo do tema nem o layout de nenhuma pagina existente.
@@ -27,7 +27,7 @@
  * GTM/gtag/pixel aqui (o GTM ja carrega no site inteiro pelo wp_head).
  *
  * Usa o header.php/footer.php e o CSS do tema filho, achados pelas constantes
- * do snippet de preview. Se aquele snippet estiver desligado, a pagina cai no
+ * do snippet "Tema". Se aquele snippet estiver desligado, a pagina cai no
  * header/footer do Hello Elementor, sem o visual do site, mas o botao e o
  * redirecionamento continuam funcionando.
  *
