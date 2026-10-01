@@ -2,12 +2,18 @@
 /**
  * Muricy Motors - pagina /obrigado/ (pos-envio do formulario de veiculo)
  *
- * Snippet PHP do WPCode, separado do "mecanismo de preview do tema filho".
+ * Snippet PHP do WPCode, NOVO e SEPARADO do "mecanismo de preview do tema
+ * filho" (nunca colar este codigo dentro daquele: ele e quem mantem no ar o
+ * Estoque, o Inicio e as paginas de veiculo).
  * No WPCode o codigo comeca neste comentario, sem a tag de abertura do PHP.
  *
- * Fluxo: o formulario "Interessado neste veiculo?" (assets/js/veiculo.js)
- * guarda a mensagem do WhatsApp no sessionStorage (chave muricy_wpp_msg) e
- * leva a pessoa para /obrigado/. Esta pagina:
+ * Nao altera nenhum arquivo do tema nem o layout de nenhuma pagina existente.
+ * Desligar este snippet devolve o site exatamente ao comportamento anterior.
+ *
+ * Fluxo: no formulario "Interessado neste veiculo?", este snippet troca so o
+ * que o envio faz. Em vez de abrir o WhatsApp direto (o que o veiculo.js do
+ * tema faz), guarda a mesma mensagem no sessionStorage (chave
+ * muricy_wpp_msg) e leva a pessoa para /obrigado/. Esta pagina:
  *  - dispara a conversao "Enviou Forms" do GTM so por carregar (acionador
  *    Page Path = /obrigado/; nada a fazer aqui);
  *  - mostra o link "Pedir Orçamento no WhatsApp" (id btn-obrigado-whatsapp),
@@ -99,11 +105,58 @@ add_action( 'wp_enqueue_scripts', function () {
   fill: none; stroke: currentColor;
   stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
 }
-/* O WhatsApp flutuante abriria uma segunda conversa enquanto a contagem
-   continua rodando. So some nesta pagina. */
-body:has(#btn-obrigado-whatsapp) .whatsapp-float { display: none; }
 ' );
 }, 20 );
+
+// Pagina de veiculo: so troca o que o envio do formulario faz. Nao imprime
+// nada visivel (so este script no rodape), entao o layout fica identico.
+add_action( 'wp_footer', function () {
+	if ( ! is_singular( 'veiculos' ) ) {
+		return;
+	}
+	?>
+<script data-no-optimize="1" data-no-defer="1">
+(function () {
+  'use strict';
+
+  // Escuta na fase de captura da window: roda antes do listener que o
+  // veiculo.js poe no proprio formulario e impede que ele abra o WhatsApp.
+  // O submit so dispara com o formulario valido (validacao nativa do
+  // navegador), entao formulario incompleto nunca chega aqui.
+  window.addEventListener('submit', function (e) {
+    var form = e.target;
+    if (!form || form.id !== 'lead-form') return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    // Mesma mensagem que o veiculo.js monta.
+    var data = new FormData(form);
+    var vehicle = form.dataset.vehicle || 'um veículo do site';
+    var lines = [
+      'Olá! Vim pelo site e tenho interesse no ' + vehicle + '.',
+      '',
+      'Nome: ' + (data.get('nome') || '').trim(),
+      'E-mail: ' + (data.get('email') || '').trim(),
+      'Telefone: ' + (data.get('telefone') || '').trim()
+    ];
+    var message = (data.get('mensagem') || '').trim();
+    if (message) lines.push('', 'Mensagem: ' + message);
+
+    // Nome, e-mail e telefone nunca vao na URL (o Google Analytics/Ads
+    // registra a URL). Sem sessionStorage, a /obrigado/ usa a mensagem padrao.
+    try {
+      window.sessionStorage.setItem('muricy_wpp_msg', lines.join('\n'));
+    } catch (err) { /* segue sem a mensagem */ }
+
+    // So o slug do carro vai junto (nao e dado pessoal). Caminho relativo para
+    // continuar no mesmo dominio: o sessionStorage e separado por dominio.
+    var slug = window.location.pathname.split('/').filter(Boolean).pop();
+    window.location.href = '/obrigado/' + (slug ? '?veiculo=' + encodeURIComponent(slug) : '');
+  }, true);
+})();
+</script>
+	<?php
+}, 100 );
 
 function muricy_obrigado_conteudo() {
 	// href padrao (pagina aberta direto, ou sem JavaScript). O script abaixo
@@ -160,11 +213,26 @@ function muricy_obrigado_conteudo() {
   // Clique antes dos 5 s: cancela o automatico, para abrir uma vez so e nao
   // disparar o evento. Sem preventDefault: o link navega normalmente e o GTM
   // registra o clique.
-  btn.addEventListener('click', function () {
+  function cancelar() {
     if (contagem) { window.clearInterval(contagem); contagem = null; }
     if (redirecionar) { window.clearTimeout(redirecionar); redirecionar = null; }
+  }
+
+  btn.addEventListener('click', function () {
+    cancelar();
     aviso.textContent = 'Abrindo o WhatsApp...';
   });
+
+  // O WhatsApp flutuante do rodape continua como no resto do site. Se a
+  // pessoa clicar nele (abre outra aba), cancela o automatico para nao abrir
+  // uma segunda conversa. Escuta no document porque o rodape ainda nao existe
+  // quando este script roda.
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('.whatsapp-float')) {
+      cancelar();
+      aviso.hidden = true;
+    }
+  }, true);
 })();
 </script>
 	<?php

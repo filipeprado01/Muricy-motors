@@ -182,7 +182,7 @@ while ( have_posts() ) : the_post();
           <textarea id="mensagem" name="mensagem" placeholder="Como podemos ajudar?"></textarea>
         </div>
         <button class="btn btn--gold form__submit" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.3A10 10 0 1 0 12 2z"></path><path d="M8.6 7.4c.3 0 .6 0 .8.5l.8 1.9c.1.3 0 .5-.2.7l-.6.6c.7 1.4 1.6 2.3 3 3l.6-.7c.2-.2.4-.3.7-.2l1.9.8c.4.2.5.4.5.8 0 1.2-1 2-2.1 2-3.3 0-7.3-4-7.3-7.3 0-1.1.8-2.1 1.9-2.1z" fill="currentColor" stroke="none"></path></svg>Enviar pelo WhatsApp</button>
-        <p class="form__note">Ao enviar, você será direcionado para o nosso WhatsApp com os seus dados já preenchidos.</p>
+        <p class="form__note">Ao enviar, abrimos o WhatsApp com os seus dados já preenchidos.</p>
       </form>
     </div>
   </section>
