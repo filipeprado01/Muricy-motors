@@ -8,8 +8,16 @@
 
 | Frente | Estado |
 |---|---|
-| Página `/obrigado/` + novo envio do formulário | **Código pronto e testado** neste repositório. Guia clique por clique entregue ao usuário. **Falta o usuário aplicar no painel** e rodar o checklist. |
+| Página `/obrigado/` + novo envio do formulário | Código pronto e testado neste repositório, **mas NÃO está no site**: a primeira tentativa de aplicar quebrou o site e foi desfeita (ver "Incidente" abaixo). O site está **como antes** de 01/10. Só retomar se o usuário pedir, **um passo por vez, com print e confirmação** antes de cada próximo passo. |
 | MCP do Elementor (`elementor-muricy-motors`) | Continua **bloqueado pelo cPGuard** (ver seção 3). Não é necessário para a `/obrigado/`. |
+
+### Incidente de 01/10 (ler antes de retomar)
+- **O que aconteceu:** ao seguir o guia, o código do snippet novo (`wpcode/pagina-obrigado.php`) foi colado **dentro do snippet existente** "Muricy Motors - mecanismo de preview do tema filho", substituindo o código dele.
+- **Efeito:** sem as constantes e os `template_redirect` desse snippet, o Estoque (114), o Início (2766) e as páginas de veículo voltaram para as versões antigas do Elementor: o formulário sumiu e os cards do "Escolhidos a dedo" pararam de funcionar. O usuário ficou com razão muito irritado.
+- **Como foi desfeito:** o usuário colou de volta o snippet original, a partir da cópia que tinha enviado no chat. Mandei um arquivo de restauração com a linha do www corrigida, mas ele disse que usou "o que te enviei". Também voltou o `veiculo.js` e o `single-veiculos.php` pelos backups. Confirmou: "o site voltou".
+- **Correção no guia (versão 3 do artifact):** o passo 1 agora tem um aviso vermelho para não mexer no snippet existente, backup desse snippet no Bloco de Notas, conferência de que o snippet novo está vazio, conferência de que a lista mostra os dois snippets ativos, conferência do Estoque/veículo depois de salvar, e um item de "Se algo der errado" para esse caso.
+- **Lição:** com esse usuário, não entregar vários passos de uma vez. Guiar um passo por mensagem e pedir print do resultado antes do seguinte.
+- **Pendente:** o usuário ainda pode ter, no Code Snippets, o snippet "Muricy Motors - página obrigado" (desligado) e a página "Obrigado" criada. Ambos são inofensivos com o formulário antigo. A linha do www no snippet restaurado pode ter ficado com a formatação de link do chat: testar `https://www.muricymotors.com.br` quando for oportuno.
 
 ## 2. Página `/obrigado/`: o que foi feito
 
@@ -77,7 +85,7 @@ Especificação do cliente: **[`docs/instrucoes-pagina-obrigado.md`](docs/instru
 - **Regra:** não ficar testando. Cada tentativa pode prolongar o bloqueio. No máximo uma checagem por sessão, e só se o usuário disser que a hospedagem liberou.
 
 ## 4. Pendências
-1. Usuário aplicar o guia e mandar o resultado do checklist.
+1. `/obrigado/` **não aplicada** (ver Incidente). Só retomar a pedido do usuário, um passo por vez.
 2. Ajuste do GTM (passo 7 do guia). Se o usuário mandar print de um acionador com condição diferente, ajustar a orientação.
 3. **www:** no snippet de preview colado no chat, a linha do www aparece como `'[www.muricymotors.com.br](https://www.muricymotors.com.br)'`. Pode ser só formatação do chat. O guia pede para abrir `https://www.muricymotors.com.br` e ver se o endereço muda para o domínio sem www. Se não mudar, corrigir essa linha para `'www.muricymotors.com.br'`.
 4. **Senha de aplicativo:** recomendar trocar (apareceu no chat da primeira sessão) e recriar a credencial do ambiente.
