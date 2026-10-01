@@ -76,6 +76,13 @@ Especificação do cliente: **[`docs/instrucoes-pagina-obrigado.md`](docs/instru
 - **Pronto para aplicar (commit `730c5c9`, guia versão 7, conferido lendo de volta):** o snippet manda o lead por sendBeacon para o Apps Script e o link sempre começa pelo endereço do acionador 02. O usuário criou uma **segunda implantação**; a URL em uso é `...AKfycbxJnebn.../exec`. A primeira (`AKfycbw0NOM...`) foi publicada sem o código e pode ser arquivada. Falta o usuário confirmar que a URL mostra "Leads Muricy: ok" e trocar o código do snippet 3875.
 - **Não verificado de verdade:** que o GTM aceita o clique programático (`btn.click()`). O teste imita o acionador "Apenas links". Conferir com o Meta Pixel Helper.
 - **Guia novo (o único que vale):** https://claude.ai/artifact/KHAFTaP446M5A4jcepSSeg ("Atualização da página Obrigado"). Tem 4 passos: conferir o /exec, trocar o código do snippet 3875, limpar o cache e testar (checklist, incluindo a planilha). O guia antigo (CiBbWRz...) recebeu um aviso de desatualizado apontando para o novo.
+- **NO AR (01/10, confirmado pelo usuário):** o snippet 3875 com o código do commit `730c5c9`.
+  - A mensagem do WhatsApp começa com "Olá! Vim do site e tenho interesse nos carros da Motors." + Veículo/Nome/E-mail/Telefone/Mensagem.
+  - A planilha "Leads do site - Muricy Motors" (aba Leads) **está recebendo** os envios. Antes de começar a aparecer, o usuário chegou a ver a planilha vazia.
+- **Pendente:**
+  1. Confirmar no F12 (filtros `conversion` e `facebook.com/tr`) que as tags 02 disparam no clique e no automático (`btn.click()`).
+  2. Em ~3 dias, ver se os avisos "Configuração incorreta" do Google Ads (metas Contato e Solicitar cotação) sumiram. Senão, pedir print das conversões dentro de cada meta. A meta "Download" tem 0 conversões principais e não se resolve com o site.
+  3. Lembrar o usuário de apagar as linhas de teste da planilha.
 - **Próximo passo combinado:** conferir o slug da "Obrigado" pela Edição rápida, sem salvar. Depois, criar o snippet.
 - **Passo 5 (GTM):** (A) conferir que o acionador da tag "01" usa Page Path = `/obrigado/`, e não Page URL igual, por causa do `?veiculo=`; (B) conferir as condições do acionador de clique (Click Text/ID/URL/Page Path), com "Aguardar tags" recomendado; (C) criar o acionador de Evento personalizado `obrigado_redirect_whatsapp` e adicioná-lo às duas tags "02" junto com o de clique; (D) testar no Visualizar/Tag Assistant e publicar. Também recomenda "Contagem: Uma" no Google Ads. **Não tenho acesso ao GTM**: as condições reais dos acionadores existentes não foram vistas.
 - **Se o usuário voltar com problema:** pedir print. Desfazer = desativar o snippet novo e/ou colar o backup no editor de tema.
