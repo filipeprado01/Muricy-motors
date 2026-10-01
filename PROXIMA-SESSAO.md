@@ -59,6 +59,7 @@ Especificação do cliente: **[`docs/instrucoes-pagina-obrigado.md`](docs/instru
   - **Não existe** sobra "Muricy Motors - página obrigado". Isso confirma que, na tentativa 1, o código foi colado dentro do "Tema".
   - A página **"Obrigado" já existe**, publicada e feita no Elementor (sobra do fluxo antigo). Não apagar nem editar: o snippet sobrepõe a renderização; desligado, volta o conteúdo Elementor dela.
   - Início (2766) já é a "Página principal".
+- **Guia versão 6 (atual, conferida lendo de volta a versão publicada):** salva o snippet **Inativo**, confere a lista por print e só então liga, como combinado no chat. O código do botão Copiar é idêntico a `wpcode/pagina-obrigado.php`.
 - **Guia versão 5:** usa o nome "Tema", não abre o "Tema" em nenhum momento (o backup é a cópia que o usuário usou para restaurar) e usa o rótulo "Executar em qualquer lugar".
 - **Próximo passo combinado:** conferir o slug da "Obrigado" pela Edição rápida, sem salvar. Depois, criar o snippet.
 - **Passo 5 (GTM):** (A) conferir que o acionador da tag "01" usa Page Path = `/obrigado/`, e não Page URL igual, por causa do `?veiculo=`; (B) conferir as condições do acionador de clique (Click Text/ID/URL/Page Path), com "Aguardar tags" recomendado; (C) criar o acionador de Evento personalizado `obrigado_redirect_whatsapp` e adicioná-lo às duas tags "02" junto com o de clique; (D) testar no Visualizar/Tag Assistant e publicar. Também recomenda "Contagem: Uma" no Google Ads. **Não tenho acesso ao GTM**: as condições reais dos acionadores existentes não foram vistas.
