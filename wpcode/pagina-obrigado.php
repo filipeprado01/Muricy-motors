@@ -19,7 +19,8 @@
  *  - mostra o link "Pedir Orçamento no WhatsApp" (id btn-obrigado-whatsapp),
  *    que o GTM escuta para a conversao "Clicou botao Wpp apos enviar forms";
  *  - depois de 5 s sem clique, faz dataLayer.push obrigado_redirect_whatsapp,
- *    espera 300 ms e abre o WhatsApp na mesma aba.
+ *    espera 300 ms e abre o WhatsApp na mesma aba clicando no proprio botao
+ *    (assim o acionador de clique do GTM tambem conta esse caso).
  *
  * Regras do GTM que NAO podem mudar (senao a conversao para de contar):
  * texto exato do botao e sem text-transform; id do link; target="_self";
@@ -37,6 +38,17 @@
 
 if ( ! defined( 'MURICY_OBRIGADO_SLUG' ) ) {
 	define( 'MURICY_OBRIGADO_SLUG', 'obrigado' );
+}
+
+// O acionador do GTM "Clicou Botao - Pedir Orcamento (Apos envio do forms)"
+// (dispara as tags "02 - ...") so reconhece cliques em links cujo endereco
+// CONTEM exatamente MURICY_OBRIGADO_WPP_URL. Por isso a mensagem do WhatsApp
+// sempre comeca com esta frase, e o link e montado colando os dados do
+// formulario depois desse endereco, sem recodificar a parte inicial. Nao
+// mudar uma letra sem mudar o acionador no GTM junto.
+if ( ! defined( 'MURICY_OBRIGADO_ABERTURA' ) ) {
+	define( 'MURICY_OBRIGADO_ABERTURA', 'Olá! Vim do site e tenho interesse nos carros da Motors.' );
+	define( 'MURICY_OBRIGADO_WPP_URL', 'https://wa.me/5511912899610?text=Ol%C3%A1!%20Vim%20do%20site%20e%20tenho%20interesse%20nos%20carros%20da%20Motors.' );
 }
 
 // Mesmo CSS/JS das paginas ja cortadas ao vivo (mesmos handles do snippet de
@@ -129,16 +141,16 @@ add_action( 'wp_footer', function () {
     e.preventDefault();
     e.stopImmediatePropagation();
 
-    // Mesma mensagem que o veiculo.js monta.
+    // Mesmos dados que o veiculo.js manda, mas comecando pela frase que o
+    // acionador do GTM reconhece (ver MURICY_OBRIGADO_ABERTURA).
     var data = new FormData(form);
-    var vehicle = form.dataset.vehicle || 'um veículo do site';
-    var lines = [
-      'Olá! Vim pelo site e tenho interesse no ' + vehicle + '.',
-      '',
+    var lines = [<?php echo wp_json_encode( MURICY_OBRIGADO_ABERTURA ); ?>, ''];
+    if (form.dataset.vehicle) lines.push('Veículo: ' + form.dataset.vehicle);
+    lines.push(
       'Nome: ' + (data.get('nome') || '').trim(),
       'E-mail: ' + (data.get('email') || '').trim(),
       'Telefone: ' + (data.get('telefone') || '').trim()
-    ];
+    );
     var message = (data.get('mensagem') || '').trim();
     if (message) lines.push('', 'Mensagem: ' + message);
 
@@ -159,9 +171,10 @@ add_action( 'wp_footer', function () {
 }, 100 );
 
 function muricy_obrigado_conteudo() {
-	// href padrao (pagina aberta direto, ou sem JavaScript). O script abaixo
-	// troca pela mensagem que o formulario guardou, quando houver.
-	$href = 'https://wa.me/5511912899610?text=' . rawurlencode( 'Olá! Vim pelo site da Muricy Motors.' );
+	// href padrao (pagina aberta direto, ou sem JavaScript): so a frase que o
+	// acionador do GTM reconhece. O script abaixo acrescenta os dados que o
+	// formulario guardou, quando houver.
+	$href = MURICY_OBRIGADO_WPP_URL;
 	?>
 <section class="obrigado" aria-labelledby="obrigado-titulo">
   <div class="shell">
@@ -181,14 +194,17 @@ function muricy_obrigado_conteudo() {
   var btn = document.getElementById('btn-obrigado-whatsapp');
   var aviso = document.getElementById('obrigado-contagem');
   var segundos = document.getElementById('obrigado-segundos');
-  var url = btn.href;
+  var ABERTURA = <?php echo wp_json_encode( MURICY_OBRIGADO_ABERTURA ); ?>;
+  var WPP_URL = <?php echo wp_json_encode( MURICY_OBRIGADO_WPP_URL ); ?>;
 
   // Mensagem montada pelo formulario do veiculo. Usada uma vez e apagada.
+  // O link comeca sempre por WPP_URL, copiado letra por letra do acionador do
+  // GTM; so o que vem depois da frase de abertura e codificado aqui.
   try {
     var msg = window.sessionStorage.getItem('muricy_wpp_msg');
     if (msg) {
-      url = 'https://wa.me/5511912899610?text=' + encodeURIComponent(msg);
-      btn.href = url;
+      var resto = msg.indexOf(ABERTURA) === 0 ? msg.slice(ABERTURA.length) : '\n\n' + msg;
+      btn.href = WPP_URL + encodeURIComponent(resto);
     }
     window.sessionStorage.removeItem('muricy_wpp_msg');
   } catch (e) { /* sem sessionStorage: fica a mensagem padrao */ }
@@ -207,7 +223,10 @@ function muricy_obrigado_conteudo() {
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: 'obrigado_redirect_whatsapp' });
-    redirecionar = window.setTimeout(function () { window.location.href = url; }, 300);
+    // Abre o WhatsApp "clicando" no proprio botao: o acionador de clique do GTM
+    // ve esse clique e as tags "02 - ..." disparam tambem para quem nao clicou,
+    // sem precisar de acionador novo no GTM.
+    redirecionar = window.setTimeout(function () { redirecionar = null; btn.click(); }, 300);
   }, 1000);
 
   // Clique antes dos 5 s: cancela o automatico, para abrir uma vez so e nao
