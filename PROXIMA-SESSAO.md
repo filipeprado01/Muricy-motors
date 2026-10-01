@@ -50,6 +50,7 @@ Especificação do cliente: **[`docs/instrucoes-pagina-obrigado.md`](docs/instru
 ### Guia entregue
 - Artifact: https://claude.ai/artifact/CiBbWRzEWu2eixAGEKRegC ("Instalação da página Obrigado"), com botões de copiar, backup no Bloco de Notas e checklist.
 - **Ordem do guia:** (1) snippet no WPCode, ativo e "Executar em todos os lugares"; (2) página "Obrigado", vazia, sem Elementor, slug `obrigado`, conferindo antes se já existe ou está na Lixeira; (3) trocar o `veiculo.js` e (4) o `single-veiculos.php` no Editor de arquivos de tema, arquivo inteiro com Ctrl+A/Ctrl+V; (5) limpar o cache do LiteSpeed; (6) checklist.
+- **Passo 7 (GTM), versão 2 do guia:** (A) conferir que o acionador da tag "01" usa Page Path = `/obrigado/`, e não Page URL igual, por causa do `?veiculo=`; (B) conferir as condições do acionador de clique (Click Text/ID/URL/Page Path), com "Aguardar tags" recomendado; (C) criar o acionador de Evento personalizado `obrigado_redirect_whatsapp` e adicioná-lo às duas tags "02" junto com o de clique; (D) testar no Visualizar/Tag Assistant e publicar. Também recomenda "Contagem: Uma" no Google Ads. **Não tenho acesso ao GTM**: as condições reais dos acionadores existentes não foram vistas.
 - **Se o usuário voltar com problema:** pedir print. Desfazer = desativar o snippet novo e/ou colar o backup no editor de tema.
 
 ### Respostas do usuário (01/10)
@@ -77,7 +78,7 @@ Especificação do cliente: **[`docs/instrucoes-pagina-obrigado.md`](docs/instru
 
 ## 4. Pendências
 1. Usuário aplicar o guia e mandar o resultado do checklist.
-2. Quem cuida do GTM precisa adicionar o evento `obrigado_redirect_whatsapp` ao acionador das tags "02 - ...". O guia avisa.
+2. Ajuste do GTM (passo 7 do guia). Se o usuário mandar print de um acionador com condição diferente, ajustar a orientação.
 3. **www:** no snippet de preview colado no chat, a linha do www aparece como `'[www.muricymotors.com.br](https://www.muricymotors.com.br)'`. Pode ser só formatação do chat. O guia pede para abrir `https://www.muricymotors.com.br` e ver se o endereço muda para o domínio sem www. Se não mudar, corrigir essa linha para `'www.muricymotors.com.br'`.
 4. **Senha de aplicativo:** recomendar trocar (apareceu no chat da primeira sessão) e recriar a credencial do ambiente.
 5. Chamado com a hospedagem, se o usuário quiser o MCP de volta.
