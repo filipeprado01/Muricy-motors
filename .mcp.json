@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "elementor-muricy-motors": {
+      "type": "http",
+      "url": "https://muricymotors.com.br/wp-json/elementor/mcp/"
+    }
+  }
+}
