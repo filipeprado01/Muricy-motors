@@ -54,6 +54,13 @@ Especificação do cliente: **[`docs/instrucoes-pagina-obrigado.md`](docs/instru
 - Artifact: https://claude.ai/artifact/CiBbWRzEWu2eixAGEKRegC ("Instalação da página Obrigado"), com botões de copiar, backup no Bloco de Notas e checklist.
 - **Guia versão 4 do artifact (a atual):** (1) página "Obrigado", vazia, sem Elementor, slug `obrigado`, conferindo antes se já existe ou está na Lixeira; (2) backup do snippet de preview no Bloco de Notas, sem salvar; mandar para a Lixeira a sobra "Muricy Motors - página obrigado" da tentativa 1; criar o snippet novo, vazio, "Executar em todos os lugares", Ativo; conferir os dois na lista; (3) limpar o cache do LiteSpeed; (4) checklist com o layout primeiro; (5) GTM. Nenhum passo mexe em arquivos do tema.
 - **Aplicação em andamento, um passo por mensagem:** primeiro pedi prints da lista do Code Snippets e da busca "obrigado" em Páginas, antes de qualquer mudança.
+- **O que os prints mostraram (01/10):**
+  - No WPCode, o snippet de preview se chama **"Tema"** (ID 3801), "Executar em qualquer lugar", php, ativo. Os outros dois snippets são exemplos inativos: 1639 (comentários) e 1638 (mensagem após parágrafo).
+  - **Não existe** sobra "Muricy Motors - página obrigado". Isso confirma que, na tentativa 1, o código foi colado dentro do "Tema".
+  - A página **"Obrigado" já existe**, publicada e feita no Elementor (sobra do fluxo antigo). Não apagar nem editar: o snippet sobrepõe a renderização; desligado, volta o conteúdo Elementor dela.
+  - Início (2766) já é a "Página principal".
+- **Guia versão 5:** usa o nome "Tema", não abre o "Tema" em nenhum momento (o backup é a cópia que o usuário usou para restaurar) e usa o rótulo "Executar em qualquer lugar".
+- **Próximo passo combinado:** conferir o slug da "Obrigado" pela Edição rápida, sem salvar. Depois, criar o snippet.
 - **Passo 5 (GTM):** (A) conferir que o acionador da tag "01" usa Page Path = `/obrigado/`, e não Page URL igual, por causa do `?veiculo=`; (B) conferir as condições do acionador de clique (Click Text/ID/URL/Page Path), com "Aguardar tags" recomendado; (C) criar o acionador de Evento personalizado `obrigado_redirect_whatsapp` e adicioná-lo às duas tags "02" junto com o de clique; (D) testar no Visualizar/Tag Assistant e publicar. Também recomenda "Contagem: Uma" no Google Ads. **Não tenho acesso ao GTM**: as condições reais dos acionadores existentes não foram vistas.
 - **Se o usuário voltar com problema:** pedir print. Desfazer = desativar o snippet novo e/ou colar o backup no editor de tema.
 
