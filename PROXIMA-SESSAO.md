@@ -23,23 +23,18 @@
 
 Especificação do cliente: **[`docs/instrucoes-pagina-obrigado.md`](docs/instrucoes-pagina-obrigado.md)**.
 
-### Arquivos no repositório
-- **`tema/hello-elementor-child/`**: cópia do tema filho "Muricy Motors Child".
-  - O commit `e04254e` é o zip que o usuário confirmou estar no ar. O commit seguinte tem as mudanças, então `git diff e04254e` mostra exatamente o que mudou.
-  - `assets/js/veiculo.js`: o submit monta a mesma mensagem, guarda em `sessionStorage` (`muricy_wpp_msg`) e vai para `/obrigado/?veiculo=<slug>` na mesma aba. O caminho é relativo de propósito: o `sessionStorage` é separado por domínio. Nenhum dado pessoal vai na URL.
-  - `single-veiculos.php`: só a frase da linha 185 ("Ao enviar, você será direcionado para o nosso WhatsApp com os seus dados já preenchidos.").
-- **`wpcode/pagina-obrigado.php`**: um snippet PHP **novo e separado** no WPCode ("Muricy Motors - página obrigado"). O snippet de preview **não** foi tocado.
-  - Renderiza a `/obrigado/` em `template_redirect` com prioridade 1 (`require` header.php + conteúdo + footer.php + `exit`), usando as constantes `MURICY_CHILD_THEME_DIR`/`_URI` do snippet de preview. Sem elas, cai no `get_header()`/`get_footer()` do Hello Elementor.
-  - Carrega `reference.css`/`main.js` com os mesmos handles do snippet de preview, mais um CSS próprio inline.
-  - Botão: `<a id="btn-obrigado-whatsapp" target="_self">`, texto literal "Pedir Orçamento no WhatsApp", `text-transform: none`, SVG com `pointer-events: none`.
-  - Contagem de 5 s, depois `dataLayer.push({ event: 'obrigado_redirect_whatsapp' })`, 300 ms e redirecionamento. Um clique antes cancela o intervalo e o timeout.
-  - `noindex, nofollow` via `wp_robots`: o site não tem plugin de SEO (nenhum namespace yoast/rankmath/aioseo no `/wp-json/`).
-  - A página fica fora do sitemap.
-  - O `.whatsapp-float` fica escondido **só** nessa página (`body:has(#btn-obrigado-whatsapp)`), para não abrir uma segunda conversa durante a contagem.
-  - O `<script>` inline tem `data-no-optimize="1" data-no-defer="1"`, porque o site usa **LiteSpeed Cache**.
-- O snippet de preview **não está no repositório**: ele tem o token secreto. O usuário colou o código na sessão de 01/10.
+### Arquivos no repositório (versão 2, depois do incidente)
+- **Pedido do usuário:** "não quero que o layout seja alterado, apenas essas funções acrescentadas; o botão vai mudar, só isso". Por isso a versão 2 **não edita nenhum arquivo do tema** e mantém a frase abaixo do botão como está.
+- **Por que mudou:** a versão 1 mandava trocar o `single-veiculos.php`/`veiculo.js` **inteiros** pela versão do zip. O usuário relatou "alterações de layout". A causa provável é que os arquivos no ar tinham ajustes posteriores ao zip. Não repetir troca de arquivo inteiro.
+- **`tema/hello-elementor-child/`**: cópia do zip (commit `e04254e`). Hoje está idêntica ao zip. Não serve para trocar arquivos no ar sem antes comparar com o que está lá.
+- **`wpcode/pagina-obrigado.php`**: um único snippet PHP novo e separado, "Muricy Motors - página obrigado". Desligá-lo devolve o site exatamente ao de hoje.
+  - **Páginas de veículo:** `wp_footer` (prioridade 100) imprime um script com um listener de `submit` na **fase de captura da window**. Ele faz `preventDefault` + `stopImmediatePropagation` para o listener do `veiculo.js` não abrir o WhatsApp, monta a mesma mensagem, guarda em `sessionStorage` (`muricy_wpp_msg`) e vai para `/obrigado/?veiculo=<slug>`. Não imprime nada visível. Efeito colateral: um acionador de "Envio de formulário" do GTM nesse form deixaria de ver o submit, mas a especificação não usa esse acionador.
+  - **`/obrigado/`:** `template_redirect` com prioridade 1 renderiza header.php + conteúdo + footer.php do tema e sai. Também: CSS inline, `noindex` via `wp_robots`, fora do sitemap. O botão segue as regras do GTM; a contagem é de 5 s, com push e 300 ms; um clique antes cancela.
+  - **WhatsApp flutuante** na `/obrigado/`: continua visível (não esconder: pedido de não mexer no layout). Um clique nele cancela a contagem, para não abrir duas conversas.
+  - `data-no-optimize`/`data-no-defer` nos scripts inline, por causa do LiteSpeed.
 
 ### Testes feitos (todos passaram)
+- **Versão 2:** 36 checagens passaram. Inclui: página do veículo **idêntica pixel a pixel e no HTML visível** com e sem o snippet; com o snippet desligado, o formulário volta a abrir o WhatsApp direto; o `veiculo.js` não abre popup com o snippet ligado; o flutuante continua visível e cancela a contagem.
 - Foi montada uma imitação mínima do WordPress em PHP, que renderiza o header.php/footer.php e o CSS reais do tema e o snippet real. Os testes rodaram com Playwright (Chromium), em 31 checagens:
   - formulário vazio ou e-mail inválido não redireciona;
   - mensagem idêntica à antiga;
@@ -57,8 +52,9 @@ Especificação do cliente: **[`docs/instrucoes-pagina-obrigado.md`](docs/instru
 
 ### Guia entregue
 - Artifact: https://claude.ai/artifact/CiBbWRzEWu2eixAGEKRegC ("Instalação da página Obrigado"), com botões de copiar, backup no Bloco de Notas e checklist.
-- **Ordem do guia:** (1) snippet no WPCode, ativo e "Executar em todos os lugares"; (2) página "Obrigado", vazia, sem Elementor, slug `obrigado`, conferindo antes se já existe ou está na Lixeira; (3) trocar o `veiculo.js` e (4) o `single-veiculos.php` no Editor de arquivos de tema, arquivo inteiro com Ctrl+A/Ctrl+V; (5) limpar o cache do LiteSpeed; (6) checklist.
-- **Passo 7 (GTM), versão 2 do guia:** (A) conferir que o acionador da tag "01" usa Page Path = `/obrigado/`, e não Page URL igual, por causa do `?veiculo=`; (B) conferir as condições do acionador de clique (Click Text/ID/URL/Page Path), com "Aguardar tags" recomendado; (C) criar o acionador de Evento personalizado `obrigado_redirect_whatsapp` e adicioná-lo às duas tags "02" junto com o de clique; (D) testar no Visualizar/Tag Assistant e publicar. Também recomenda "Contagem: Uma" no Google Ads. **Não tenho acesso ao GTM**: as condições reais dos acionadores existentes não foram vistas.
+- **Guia versão 4 do artifact (a atual):** (1) página "Obrigado", vazia, sem Elementor, slug `obrigado`, conferindo antes se já existe ou está na Lixeira; (2) backup do snippet de preview no Bloco de Notas, sem salvar; mandar para a Lixeira a sobra "Muricy Motors - página obrigado" da tentativa 1; criar o snippet novo, vazio, "Executar em todos os lugares", Ativo; conferir os dois na lista; (3) limpar o cache do LiteSpeed; (4) checklist com o layout primeiro; (5) GTM. Nenhum passo mexe em arquivos do tema.
+- **Aplicação em andamento, um passo por mensagem:** primeiro pedi prints da lista do Code Snippets e da busca "obrigado" em Páginas, antes de qualquer mudança.
+- **Passo 5 (GTM):** (A) conferir que o acionador da tag "01" usa Page Path = `/obrigado/`, e não Page URL igual, por causa do `?veiculo=`; (B) conferir as condições do acionador de clique (Click Text/ID/URL/Page Path), com "Aguardar tags" recomendado; (C) criar o acionador de Evento personalizado `obrigado_redirect_whatsapp` e adicioná-lo às duas tags "02" junto com o de clique; (D) testar no Visualizar/Tag Assistant e publicar. Também recomenda "Contagem: Uma" no Google Ads. **Não tenho acesso ao GTM**: as condições reais dos acionadores existentes não foram vistas.
 - **Se o usuário voltar com problema:** pedir print. Desfazer = desativar o snippet novo e/ou colar o backup no editor de tema.
 
 ### Respostas do usuário (01/10)
