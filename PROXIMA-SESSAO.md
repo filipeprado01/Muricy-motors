@@ -80,7 +80,7 @@ Especificação do cliente: **[`docs/instrucoes-pagina-obrigado.md`](docs/instru
   - A mensagem do WhatsApp começa com "Olá! Vim do site e tenho interesse nos carros da Motors." + Veículo/Nome/E-mail/Telefone/Mensagem.
   - A planilha "Leads do site - Muricy Motors" (aba Leads) **está recebendo** os envios. Antes de começar a aparecer, o usuário chegou a ver a planilha vazia.
 - **Pendente:**
-  1. Confirmar no F12 (filtros `conversion` e `facebook.com/tr`) que as tags 02 disparam no clique e no automático (`btn.click()`).
+  1. ~~Confirmar no F12 que as tags 02 disparam~~ **CONFIRMADO em 01/10** pelos prints do DevTools do usuário. Google Ads AW-16834399743: hits de conversão (fetch e gif 200) ao carregar a /obrigado/ (tag 01) e de novo **5 s depois, no automático**, e **~1 s depois, no clique manual** (tag 02). Os pedidos secundários `1p-conversion` cortados pela navegação aparecem como "(unknown)", e isso é normal. O Meta tem `tr/` 200 na /obrigado/ e logo após o clique no WhatsApp. O link do wa.me contém o trecho do acionador. O usuário encerrou o projeto.
   2. Em ~3 dias, ver se os avisos "Configuração incorreta" do Google Ads (metas Contato e Solicitar cotação) sumiram. Senão, pedir print das conversões dentro de cada meta. A meta "Download" tem 0 conversões principais e não se resolve com o site.
   3. Lembrar o usuário de apagar as linhas de teste da planilha.
 - **Próximo passo combinado:** conferir o slug da "Obrigado" pela Edição rápida, sem salvar. Depois, criar o snippet.
