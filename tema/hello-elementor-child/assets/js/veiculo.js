@@ -1,6 +1,6 @@
 /* =========================================================================
    Muricy Motors — página de veículo
-   Galeria de fotos, abas e envio do formulário pelo WhatsApp.
+   Galeria de fotos, abas e envio do formulário (via página /obrigado/).
    ========================================================================= */
 (function () {
   'use strict';
@@ -100,16 +100,18 @@
     });
   }
 
-  /* --------------------- Formulário -> mensagem no WhatsApp ---------------- */
+  /* ------------- Formulário -> página /obrigado/ -> WhatsApp --------------- */
   var form = document.getElementById('lead-form');
 
   if (form) {
+    // O submit só dispara com o formulário válido (validação nativa do
+    // navegador: required / type="email"), então formulário incompleto nunca
+    // chega a ir para a /obrigado/.
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
       var data = new FormData(form);
       var vehicle = form.dataset.vehicle || 'um veículo do site';
-      var phone = form.dataset.phone;
 
       var lines = [
         'Olá! Vim pelo site e tenho interesse no ' + vehicle + '.',
@@ -122,11 +124,19 @@
       var message = (data.get('mensagem') || '').trim();
       if (message) lines.push('', 'Mensagem: ' + message);
 
-      window.open(
-        'https://wa.me/' + phone + '?text=' + encodeURIComponent(lines.join('\n')),
-        '_blank',
-        'noopener'
-      );
+      // A mensagem fica guardada só nesta aba (sessionStorage) e a /obrigado/
+      // monta o link do WhatsApp com ela. Nome, e-mail e telefone nunca vão na
+      // URL: o Google Analytics/Ads registra a URL, e dado pessoal ali viola as
+      // políticas do Google. Se o navegador bloquear o sessionStorage, a
+      // /obrigado/ usa a mensagem padrão.
+      try {
+        window.sessionStorage.setItem('muricy_wpp_msg', lines.join('\n'));
+      } catch (err) { /* segue sem a mensagem */ }
+
+      // Só o slug do carro vai junto (não é dado pessoal). Caminho relativo
+      // para continuar no mesmo domínio: o sessionStorage é separado por domínio.
+      var slug = window.location.pathname.split('/').filter(Boolean).pop();
+      window.location.href = '/obrigado/' + (slug ? '?veiculo=' + encodeURIComponent(slug) : '');
     });
   }
 })();
