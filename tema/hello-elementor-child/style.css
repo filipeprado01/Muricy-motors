@@ -1,0 +1,13 @@
+/*
+Theme Name: Muricy Motors Child
+Theme URI: https://muricymotors.com.br/
+Description: Tema filho do Hello Elementor. Guarda os templates PHP e o CSS/JS proprios da Muricy Motors (Inicio, Estoque, ficha de veiculo), construidos a partir do design de referencia do cliente. Instalado inativo ate cada etapa da migracao ser validada.
+Author: Muricy Motors
+Template: hello-elementor
+Version: 1.0.0
+Text Domain: muricy-motors-child
+*/
+
+/* Este arquivo existe só para o WordPress reconhecer o tema.
+   O CSS de verdade (portado do site de referência) entra depois,
+   em assets/css/style.css, enfileirado pelo functions.php. */
