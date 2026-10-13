@@ -141,3 +141,19 @@ O lugar exato é **entre** a linha do `<link rel="profile"...>` e a linha do `<?
 Só que, por esse caminho, você precisaria:
 - colar nos **dois** arquivos `header.php`, o do tema pai e o do tema filho;
 - colar **de novo** a cada atualização do Hello Elementor.
+
+---
+
+## 8. O aviso "A tag parou de enviar dados" no Google
+
+O aviso aparece porque o site ficou sem essa tag: até 13/10/2026, nenhuma página tinha o `AW-16834399743`. O Google confere as **últimas 48 horas**, então o aviso costuma sumir sozinho em **1 a 2 dias**, conforme as visitas chegam. Não precisa fazer nada nele.
+
+**Para confirmar na hora, sem esperar o aviso:**
+1. Abra **tagassistant.google.com**.
+2. Clique em **Adicionar domínio**, digite `https://muricymotors.com.br/` e clique em **Conectar**. O site abre numa aba nova.
+3. Volte para a aba do Tag Assistant. No topo, deve aparecer **AW-16834399743**, além do **GTM-TXTXKBT6**.
+4. Se não aparecer, desligue o bloqueador de anúncios do navegador e tente de novo.
+
+**Se o aviso continuar depois de 3 dias:** faça o teste da janela anônima (seção 5). Se o `AW-16834399743` não aparecer para quem não está logado, limpe o cache do site.
+
+**O outro item do aviso, "Adicionar outro administrador":** não tem a ver com a tag. É o Google sugerindo uma segunda pessoa da equipe como administradora, para vocês não perderem o acesso se a conta de alguém der problema. Vale fazer quando der.
