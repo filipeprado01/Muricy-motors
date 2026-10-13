@@ -1,6 +1,6 @@
 # Passar a tag do Google Ads (AW-16834399743) para o GTM
 
-> **Decisão em 13/10/2026: a tag fica no snippet.** Este guia é opcional. Use só se a equipe que cuida do GTM quiser centralizar a tag lá.
+> **Atualização em 13/10/2026: o GTM já tem a tag.** O Tag Assistant mostrou a AW-16834399743 vindo de uma tag do GTM chamada **"TG - Muricy Motors"** (IDs `AW-16834399743` e `GT-NGK5QQW2`). As seções 2 e 3 já estão feitas. Falta só a **seção 4** (desligar o snippet) e a **seção 5** (conferir).
 
 > **Resumo:** a tag funciona hoje pelo snippet. Mover para o Google Tag Manager deixa tudo num lugar só, junto das conversões "01 - GADS" e "02 - GADS".
 >
