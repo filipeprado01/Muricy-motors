@@ -153,6 +153,7 @@ O aviso aparece porque o site ficou sem essa tag: até 13/10/2026, nenhuma pági
 2. Clique em **Adicionar domínio**, digite `https://muricymotors.com.br/` e clique em **Conectar**. O site abre numa aba nova.
 3. Volte para a aba do Tag Assistant. No topo, deve aparecer **AW-16834399743**, além do **GTM-TXTXKBT6**.
 4. Se não aparecer, desligue o bloqueador de anúncios do navegador e tente de novo.
+5. Se aparecer **"A depuração não está ativada para o GTM-TXTXKBT6 / Você não tem acesso a este contêiner"**: não é erro no site. Só quer dizer que a sua conta do Google não tem acesso ao GTM. Clique em **AW-16834399743** na barra do topo para ver a tag do Google Ads, que não depende de acesso.
 
 **Se o aviso continuar depois de 3 dias:** faça o teste da janela anônima (seção 5). Se o `AW-16834399743` não aparecer para quem não está logado, limpe o cache do site.
 
