@@ -11,9 +11,46 @@
 
 ---
 
+## ⚠️ Atualização de 13/10, à tarde: leia isto primeiro
+
+Os prints do Google Ads, do GA4, da lista de snippets e do Site Kit trouxeram três novidades.
+
+### 1. Problema novo e mais grave: o Analytics quase não vê visitantes 🔴
+
+| Fonte | Últimos 28 dias |
+|---|---|
+| Google Analytics, via Site Kit | **13 visitantes no total**, uma **queda de 99,1%** em relação aos 28 dias anteriores |
+| Search Console: cliques vindos da busca do Google, contados sem tag nenhuma | **26 cliques** |
+| Analytics: visitantes vindos da busca orgânica | cerca de **1** |
+| Página mais vista no Analytics | **"Página não encontrada"** (erro 404) |
+
+Só a busca do Google mandou 26 pessoas ao site, mas o Analytics contou 1. Ou seja, **as tags não estão sendo contadas para a maioria dos visitantes**. Isso afeta o Analytics, o Google Ads, o Meta e o Clarity, porque todos dependem do mesmo GTM.
+
+**Suspeitos, do mais para o menos provável:**
+1. **O firewall da hospedagem (cPGuard).** Ele bloqueia meus acessos com erro 406 e uma tela "Verify you are human". Se fizer o mesmo com visitantes reais, eles nem chegam ao site, e isso seria **perda de clientes**, não só de dados.
+2. **As otimizações do LiteSpeed Cache.** Elas só valem para quem não está logado, por isso os seus testes logado não mostram o problema.
+3. **Links antigos, de anúncios ou do Google, que caem em páginas que não existem mais (404).**
+
+**Teste para descobrir (5 minutos):** está na seção 6.
+
+### 2. Correção: a página `/obrigado/` provavelmente já existe 🟡
+
+A lista de snippets tem **"Muricy Motors - página obrigado"**, ativo desde 1º/10. O arquivo `veiculo.js` também foi alterado em 1º/10. Então o formulário dos veículos provavelmente já leva para a `/obrigado/`, e a conversão **"01 - GADS - Enviou Forms"** pode estar funcionando. Isso combina com o Google Ads, que mostra 2 "Solicitar cotação" e 2 "Contato" nos últimos 30 dias.
+
+Ou seja: a frase "nenhuma conversão está sendo contada", do resumo abaixo, **estava errada para o formulário**. Para os cliques no WhatsApp, continua valendo.
+
+### 3. Outras descobertas
+- O plugin de snippets é o **Code Snippets** ("Snippets de código"). O **WPCode** também está instalado, porque aparece na barra do topo. O código do GTM provavelmente está nele, em **Header & Footer**.
+- O **LiteSpeed Cache** está instalado. Depois de qualquer mudança, é preciso **limpar o cache**.
+- No Google Ads, as metas **"Contato"**, **"Solicitar cotação"** e **"Download"** estão com **"Configuração incorreta"**. A "Download" tem 0 ações de conversão e está ligada às 4 campanhas. O motivo das outras duas aparece clicando no aviso.
+- **O GA4 não está vinculado ao Google Ads.** A Central de dados oferece "4 propriedades" para conectar. Melhoria opcional para depois.
+- O GA4 (fluxo `muricymotors.com.br`, ID `15117557291`) está "Recebendo tráfego nas últimas 48 horas". Ou seja, recebe **algum** tráfego, mas muito pouco.
+
+---
+
 ## Resumo em 30 segundos
 
-- 🔴 **Nenhuma conversão está sendo contada hoje.** Nem no Google Ads, nem no Meta. Todas as tags de conversão do GTM foram montadas para o **site antigo**, com textos e endereços que o site novo não tem mais.
+- 🔴 **Nenhuma conversão de clique no WhatsApp está sendo contada.** Nem no Google Ads, nem no Meta. *(A conversão do formulário provavelmente funciona: veja a atualização acima.)* Todas as tags de conversão do GTM foram montadas para o **site antigo**, com textos e endereços que o site novo não tem mais.
 - ✅ **As tags básicas funcionam:** visitas no Google Ads (remarketing), Google Analytics, pixel do Meta (visualização de página) e Clarity.
 - 🟡 **O snippet que você colou é repetido.** O GTM já carrega a mesma tag do Google Ads há pelo menos 7 meses.
 - ⚪ **O segundo GTM (GTM-MVP62MSZ) está vazio** e não está no site. Ele não atrapalha nada.
@@ -50,7 +87,7 @@
 
 | Tag | O acionador espera... | O site novo tem... | Situação |
 |---|---|---|---|
-| **01 - GADS - Enviou Forms no Site** | Visita à página `/obrigado/` | Nenhuma página `/obrigado/`: o formulário abre o WhatsApp direto | 🔴 Nunca dispara |
+| **01 - GADS - Enviou Forms no Site** | Visita à página `/obrigado/` | Provavelmente já tem: há um snippet "página obrigado" ativo desde 1º/10 | 🟡 Deve funcionar. Confirmar com o teste do formulário. |
 | **02 - GADS - Clicou botão Wpp após Enviar Forms** | Clique num link de WhatsApp com a mensagem exata "Olá! Vim **do** site e tenho interesse nos carros da Motors." | Nenhum link com essa mensagem | 🔴 Nunca dispara |
 | **02 - Meta - Clicou botão WPP após enviar forms** | O mesmo acionador acima | O mesmo | 🔴 Nunca dispara |
 | **01 - Tag Botão whatsapp - Meta** | Clique em algo com o texto "Whatsapp" (com **a** minúsculo) | Os botões escrevem "Whats**A**pp", com A maiúsculo, e o GTM diferencia maiúscula de minúscula. O botão flutuante não tem texto nenhum. | 🔴 Não dispara |
@@ -108,6 +145,22 @@ Ninguém errou no GTM. Ele só não foi atualizado junto com o site.
 ---
 
 ## 6. O que preciso agora
+
+### Primeiro: teste do celular (5 minutos, o mais importante)
+1. **No computador**, abra o GA4 em **Relatórios → Tempo real** e deixe a tela aberta.
+2. **No celular, com o Wi-Fi desligado** (só 4G/5G) e **sem estar logado** no WordPress, abra `muricymotors.com.br` e navegue por 2 ou 3 páginas, incluindo uma de veículo.
+3. Me conte duas coisas:
+   - **Apareceu no celular** alguma tela de "Security Check", "Verify you are human" ou erro? Se aparecer, tire print.
+   - **No Tempo real do GA4, apareceu 1 usuário** em até 1 minuto?
+
+### Depois: prints
+1. **Google Ads → Campanhas**, últimos 28 dias, mostrando o **total de cliques**. Serve para comparar com os 4 visitantes de "Paid Search" no Analytics.
+2. **Google Ads → Metas → Conversões → "Ver todas as ações de conversão"**, mostrando a lista com o status de cada ação.
+3. **Google Ads:** clicar em **"Configuração incorreta"** na meta "Contato" e tirar print do motivo.
+4. **WPCode → Header & Footer:** print, para eu ver onde está o GTM.
+5. **Snippets de código → "Muricy Motors - página obrigado" → Editar:** copiar o código e me enviar. Esse snippet não deve ter senha. Se aparecer algo como "token", troque por `XXXX`.
+
+### Ainda pendente
 
 1. **Print das conversões do Google Ads** (seção B1 do arquivo `auditoria-tags-o-que-enviar.md`). Preciso saber quais conversões existem para escolher em qual delas ligar os cliques no WhatsApp.
 2. **Prints do Meta** (seção D1): visão geral e diagnóstico. Preciso saber se alguma campanha usa o evento `1087123063496680`.
