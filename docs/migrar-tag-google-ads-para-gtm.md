@@ -1,5 +1,7 @@
 # Passar a tag do Google Ads (AW-16834399743) para o GTM
 
+> **Decisão em 13/10/2026: a tag fica no snippet.** Este guia é opcional. Use só se quem cuida do GTM quiser centralizar a tag lá.
+
 > **Resumo:** a tag funciona hoje pelo snippet. Mover para o Google Tag Manager deixa tudo num lugar só, junto das conversões "01 - GADS" e "02 - GADS".
 >
 > **Regra de ouro:** a tag fica no GTM **ou** no snippet, **nunca nos dois**. Com os dois, o Google conta as visitas em dobro.
