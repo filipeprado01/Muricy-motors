@@ -1,6 +1,6 @@
 # Passar a tag do Google Ads (AW-16834399743) para o GTM
 
-> **Decisão em 13/10/2026: a tag fica no snippet.** Este guia é opcional. Use só se quem cuida do GTM quiser centralizar a tag lá.
+> **Decisão em 13/10/2026: a tag fica no snippet.** Este guia é opcional. Use só se a equipe que cuida do GTM quiser centralizar a tag lá.
 
 > **Resumo:** a tag funciona hoje pelo snippet. Mover para o Google Tag Manager deixa tudo num lugar só, junto das conversões "01 - GADS" e "02 - GADS".
 >
@@ -16,10 +16,10 @@
 |---|---|---|
 | Funciona? | Sim | Sim |
 | Onde se gerencia | No WordPress | No mesmo lugar das outras tags (Ads, Meta) |
-| Quem consegue mexer | Quem tem acesso ao WordPress | Quem tem acesso ao GTM, como a agência |
+| Quem consegue mexer | Quem tem acesso ao WordPress | Quem da equipe tem acesso ao GTM |
 | Recomendação do Google | Para sites **sem** GTM | Para sites **com** GTM, que é o seu caso |
 
-**Antes de começar:** se quem cuida do GTM é outra pessoa (agência, gestor de tráfego), peça para ela fazer as seções 2 e 3. Você faz só a seção 4.
+**Antes de começar:** se outra pessoa da equipe cuida do GTM, peça para ela fazer as seções 2 e 3. Você faz só a seção 4.
 
 ---
 
