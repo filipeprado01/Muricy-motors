@@ -1,5 +1,7 @@
 # Auditoria das tags da Muricy Motors: o que me enviar
 
+> **Status em 13/10/2026:** recebi os dois GTMs, e o relatório já está pronto em [`auditoria-tags-relatorio.md`](auditoria-tags-relatorio.md). **Próximos itens: B1 (Google Ads) e D1 (Meta).**
+
 > **Objetivo:** deixar todo o rastreamento do site 100% funcional (Google Ads, Google Analytics, Meta e Clarity).
 >
 > **Por que preciso disso:** eu não consigo entrar no GTM, no Google Ads nem no Meta, e o firewall da hospedagem bloqueia meu acesso ao site. Então tudo chega até mim pelo que você me enviar.
@@ -12,7 +14,7 @@
 
 ## Comece aqui (o mínimo para eu começar)
 
-- [ ] **1. Os arquivos exportados dos dois GTMs** (seção A1). São os mais importantes de todos.
+- [x] **1. Os arquivos exportados dos dois GTMs** (seção A1). São os mais importantes de todos.
 - [ ] **2. O print das conversões do Google Ads** (seção B1).
 - [ ] **3. Onde você viu as tags "com problema"** (seção F, pergunta 1).
 
