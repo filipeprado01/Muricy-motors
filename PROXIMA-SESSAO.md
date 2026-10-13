@@ -2,7 +2,7 @@
 
 > Para começar a próxima sessão: **"Leia o PROXIMA-SESSAO.md e continue de onde parou."**
 >
-> Atualizado em 01/10/2026. O dono do site **não é programador**: responder em português, com passos clique por clique.
+> Atualizado em 13/10/2026. O dono do site **não é programador**: responder em português, com passos clique por clique.
 
 ## 1. Situação
 
@@ -10,6 +10,7 @@
 |---|---|
 | MCP do Elementor (`elementor-muricy-motors`) | Configurado e testado: login aceito, 20 ferramentas. Logo depois foi **bloqueado pelo firewall cPGuard** da hospedagem (ver seção 2). |
 | Página `/obrigado/` + novo envio do formulário | Código analisado e plano montado. **Nada foi alterado no site.** Faltam 4 respostas (seção 4) e os arquivos (seção 5). |
+| Tag do Google Ads `AW-16834399743` (gtag) | Pedido do usuário em 13/10. Passo a passo entregue em [`docs/instalar-tag-google-ads.md`](docs/instalar-tag-google-ads.md): snippet novo no `<head>` do site inteiro, **não** no `header.php`. Falta o usuário aplicar e confirmar que o GTM não tem uma "Tag do Google" com esse ID (daqui não dá para ler o GTM: `googletagmanager.com` é bloqueado pela rede). |
 
 ## 2. MCP do WordPress/Elementor
 
