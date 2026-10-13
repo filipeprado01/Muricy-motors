@@ -28,7 +28,7 @@ Com esses três, eu já consigo dizer o que está quebrado. O resto completa o q
 |---|---|---|---|
 | 🔴 | Conversões **"01 - GADS - Enviou Forms"** e **"02 - GADS/Meta - Clicou Wpp após forms"** | **Não conseguem disparar.** Elas dependem da página `/obrigado/`, que não existe no site atual: hoje o formulário abre o WhatsApp direto. | Alta: está na especificação da própria equipe |
 | 🔴 | **Dois contêineres do GTM** para a Muricy | O site só carrega o **GTM-TXTXKBT6**. Se a equipe configurou tags no **GTM-MVP62MSZ**, elas **nunca dispararam**. | Alta: só o TXTXKBT6 aparece no código do site e no Tag Assistant |
-| 🟡 | Tag do Google Ads **AW-16834399743** | Funciona, mas está carregando **duas vezes**: pelo GTM (tag "TG - Muricy Motors") e pelo snippet. Falta o teste de desligar o snippet. | Alta: visto no Tag Assistant |
+| 🟡 | Tag do Google Ads **AW-16834399743** | Funciona, mas está carregando **duas vezes**: pelo GTM (tag "00 - Google Ads | Tag do Google") e pelo snippet. Falta o teste de desligar o snippet. | Alta: visto no Tag Assistant |
 | 🟡 | Cliques nos outros botões de WhatsApp | **Podem ter quebrado** quando o site foi refeito, porque textos, classes e IDs dos botões mudaram. | Hipótese: só confirmo com o arquivo do GTM |
 | ⚪ | Google Analytics **G-2P8YNKJCQK** | Aparece no site. Não sei se os eventos estão chegando. | Falta informação |
 | ⚪ | Meta Pixel e Microsoft Clarity | Não sei a situação. | Falta informação |
@@ -145,7 +145,7 @@ Páginas:
 2. **O que conta como lead para a Muricy?** Por exemplo: enviar o formulário, clicar no WhatsApp (em quais botões?), ligar.
 3. **Quem da equipe é administrador** do GTM, do Google Ads, do GA4 e do Meta? Só os nomes ou cargos, não precisa de e-mail.
 4. **O site tem aviso de cookies** (aquela faixa de LGPD)?
-5. **Alguém mexeu no GTM nos últimos dias?** Principalmente na tag "TG - Muricy Motors".
+5. ~~Alguém mexeu no GTM nos últimos dias?~~ Já respondido: o GTM-TXTXKBT6 não muda há cerca de 7 meses.
 
 ---
 
