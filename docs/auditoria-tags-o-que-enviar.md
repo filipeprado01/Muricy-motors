@@ -12,7 +12,7 @@
 
 ## Comece aqui (o mínimo para eu começar)
 
-- [ ] **1. O arquivo exportado do GTM** (seção A1). É o mais importante de todos.
+- [ ] **1. Os arquivos exportados dos dois GTMs** (seção A1). São os mais importantes de todos.
 - [ ] **2. O print das conversões do Google Ads** (seção B1).
 - [ ] **3. Onde você viu as tags "com problema"** (seção F, pergunta 1).
 
@@ -25,6 +25,7 @@ Com esses três, eu já consigo dizer o que está quebrado. O resto completa o q
 | | O quê | Situação | Certeza |
 |---|---|---|---|
 | 🔴 | Conversões **"01 - GADS - Enviou Forms"** e **"02 - GADS/Meta - Clicou Wpp após forms"** | **Não conseguem disparar.** Elas dependem da página `/obrigado/`, que não existe no site atual: hoje o formulário abre o WhatsApp direto. | Alta: está na especificação da própria equipe |
+| 🔴 | **Dois contêineres do GTM** para a Muricy | O site só carrega o **GTM-TXTXKBT6**. Se a equipe configurou tags no **GTM-MVP62MSZ**, elas **nunca dispararam**. | Alta: só o TXTXKBT6 aparece no código do site e no Tag Assistant |
 | 🟡 | Tag do Google Ads **AW-16834399743** | Funciona, mas está carregando **duas vezes**: pelo GTM (tag "TG - Muricy Motors") e pelo snippet. Falta o teste de desligar o snippet. | Alta: visto no Tag Assistant |
 | 🟡 | Cliques nos outros botões de WhatsApp | **Podem ter quebrado** quando o site foi refeito, porque textos, classes e IDs dos botões mudaram. | Hipótese: só confirmo com o arquivo do GTM |
 | ⚪ | Google Analytics **G-2P8YNKJCQK** | Aparece no site. Não sei se os eventos estão chegando. | Falta informação |
@@ -35,25 +36,34 @@ Com esses três, eu já consigo dizer o que está quebrado. O resto completa o q
 
 ## A. Google Tag Manager (GTM)
 
-> Sua conta do Google **não tem acesso** ao GTM. Por isso, quem faz os itens A1 e A2 é **a pessoa da equipe que administra o GTM**. Pode encaminhar esta seção para ela.
+> **Descoberta de 13/10/2026:** a Muricy Motors tem **dois contêineres** no GTM, em contas diferentes:
+>
+> | Contêiner | Conta do GTM | Login do Google que enxerga | Está no site? |
+> |---|---|---|---|
+> | **GTM-TXTXKBT6** | "GTM - Familia Muricy" | conta **videos** (logo WEB) | **Sim.** É o único que o site carrega. |
+> | **GTM-MVP62MSZ** | "Muricy Motors" | conta **Marketing 2** | **Não.** Nada que estiver nele funciona no site. |
+>
+> **Não instale o GTM-MVP62MSZ no site por enquanto.** Se os dois tiverem as mesmas tags, tudo passaria a contar em dobro.
 
-### A1. Exportar o contêiner (arquivo .json)
-1. Entrar em **tagmanager.google.com** e abrir o contêiner **GTM-TXTXKBT6**.
+### A1. Exportar os dois contêineres (2 arquivos .json)
+Faça os passos abaixo **duas vezes**:
+- com a conta **videos**, no **GTM-TXTXKBT6**;
+- com a conta **Marketing 2**, no **GTM-MVP62MSZ**.
+
+Para trocar de conta, clique na sua foto no canto de cima à direita do GTM.
+
+1. Entrar em **tagmanager.google.com** e clicar no contêiner.
 2. No topo, clicar em **Administrador**.
 3. Na coluna do contêiner, clicar em **Exportar contêiner**.
 4. Em **Escolher uma versão ou um espaço de trabalho**, escolher a versão marcada como **Publicada** (Live).
+   - Se não existir nenhuma versão publicada, escolha o **Espaço de trabalho padrão** e me avise.
 5. Clicar em **Exportar**. O navegador baixa um arquivo `.json`.
-6. Me enviar esse arquivo.
+6. Me enviar os dois arquivos.
 
-> O arquivo traz todas as tags, acionadores e variáveis do GTM. Ele não tem senha.
+> Os arquivos trazem todas as tags, acionadores e variáveis. Eles não têm senha.
 
-### A2. Dar acesso de leitura para você (opcional, mas ajuda)
-1. **Administrador** → coluna do contêiner → **Gerenciamento de usuários**.
-2. Clicar no **+** → **Adicionar usuários**.
-3. Colocar o seu e-mail e marcar a permissão **Leitura**.
-4. Clicar em **Convidar**.
-
-Com isso você consegue ver o GTM e conferir comigo, sem risco de mudar nada.
+### A2. Tag Assistant: usar a conta certa
+O Tag Assistant disse "Você não tem acesso a este contêiner" porque estava aberto com uma conta sem acesso ao GTM-TXTXKBT6. Para ver o GTM por dentro no Tag Assistant, entre nele com a conta **videos**.
 
 ---
 
