@@ -10,7 +10,7 @@
 |---|---|
 | MCP do Elementor (`elementor-muricy-motors`) | Configurado e testado: login aceito, 20 ferramentas. Logo depois foi **bloqueado pelo firewall cPGuard** da hospedagem (ver seção 2). |
 | Página `/obrigado/` + novo envio do formulário | Código analisado e plano montado. **Nada foi alterado no site.** Faltam 4 respostas (seção 4) e os arquivos (seção 5). |
-| Tag do Google Ads `AW-16834399743` (gtag) | Pedido do usuário em 13/10. Passo a passo entregue em [`docs/instalar-tag-google-ads.md`](docs/instalar-tag-google-ads.md): snippet novo no `<head>` do site inteiro, **não** no `header.php`. Falta o usuário aplicar e confirmar que o GTM não tem uma "Tag do Google" com esse ID (daqui não dá para ler o GTM: `googletagmanager.com` é bloqueado pela rede). |
+| Tag do Google Ads `AW-16834399743` (gtag) | **Instalada pelo usuário via snippet** (13/10): o print do código-fonte da Home (logado) mostra o gtag no `<head>`, 2 ocorrências do ID. O usuário perguntou se não seria melhor pelo GTM: recomendado migrar, passo a passo em [`docs/migrar-tag-google-ads-para-gtm.md`](docs/migrar-tag-google-ads-para-gtm.md). Nunca deixar nos dois. Guia original: [`docs/instalar-tag-google-ads.md`](docs/instalar-tag-google-ads.md). Em 13/10 o site devolveu `406 Not Acceptable` para os pedidos da sessão (firewall de novo). |
 
 ## 2. MCP do WordPress/Elementor
 
